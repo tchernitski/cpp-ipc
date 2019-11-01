@@ -56,11 +56,15 @@ public:
     template <typename U>
     allocator_wrapper(const allocator_wrapper<U, AllocP>&) noexcept {}
 
-    allocator_wrapper& operator=(allocator_wrapper&& rhs) noexcept {}
     allocator_wrapper(allocator_wrapper<T, AllocP> && rhs) noexcept : alloc_(std::move(rhs.alloc_)) {}
     template <typename U>
     allocator_wrapper(allocator_wrapper<U, AllocP> && rhs) noexcept : alloc_(std::move(rhs.alloc_)) {}
     allocator_wrapper(alloc_policy                 && rhs) noexcept : alloc_(std::move(rhs)) {}
+
+    allocator_wrapper& operator=(allocator_wrapper && rhs) noexcept {
+        alloc_ = std::move(rhs.alloc_);
+        return *this;
+    }
 
 public:
     // the other type of std_allocator
